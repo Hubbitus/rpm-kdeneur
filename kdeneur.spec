@@ -1,27 +1,21 @@
-#% global HGrev 1032
+# Review request: https://bugzilla.redhat.com/show_bug.cgi?id=kdeneur
 
 Summary:       KDE frontend for X Neural Switcher (xneur)
 Summary(ru):   KDE интерфейс для X Neural Switcher (xneur)
 Name:          kdeneur
-Version:       0.19.0
-Release:       1%{?HGrev:.hg%{HGrev}}%{?dist}
+Version:       0.20.0
+Release:       1%{?dist}
 
 Group:         User Interface/Desktops
 License:       GPLv2+
 URL:           http://www.xneur.ru
-%if 0%{?HGrev}
-# Sources now in mercurial. Tarball from author to fix last deprecated error.
-Source:        kdeneur-%{version}+hg%{HGrev}.orig.tar.gz
-%else
-Source:        https://launchpad.net/~andrew-crew-kuznetsov/+archive/xneur-stable/+files/%{name}_%{version}.orig.tar.gz
-%endif
+# Unfortunately there no traditional TAGs in repository, and I can't use recommended way to provide URL, link from official site:
+Source:        https://github.com/AndrewCrewKuznetsov/xneur-devel/blob/master/dists/%{version}/kdeneur_%{version}.orig.tar.gz?raw=true#/kdeneur_%{version}.orig.tar.gz
 Source1:       kdeneur.desktop
 
 BuildRequires: desktop-file-utils, pcre-devel, qt5-qtbase-devel, kdelibs-devel
 BuildRequires: xneur-devel = %{version}
-%if 0%{?HGrev}
 BuildRequires: libtool
-%endif
 
 # Require explicit full versione because not only labriry used. This is only GUI to xneur config daemon and relies on
 # concrete xneur futures, including concrete revision fixes if that SCM build.
@@ -34,22 +28,11 @@ KDE front-end for X Neural Switcher (xneur).
 KDE интерфейс для Интеллектуального переключателя клавиатурных раскладок (xneur)
 
 %prep
-%setup -q
-
-# rpmlint happy on W: spurious-executable-perm /usr/src/debug/kdeneur-0.17.0/src/tabbar.h
-find -iname '*.h' -exec chmod -x {} \;
+%autosetup
 
 %build
-%if 0%{?HGrev}
-./autogen.sh
-%endif
-
-#export XNEUR_LIBS="-lxnconfig -lpcre -lX11 -ldl"
-#export XNEUR_LIBS="-lxnconfig -lpcre"
-
 %configure
 make %{?_smp_mflags} CXXFLAGS=" -I%{_kde4_includedir}/ -L%{_kde4_libdir}/kde4/devel/ -lkdecore %{optflags}"
-
 
 %install
 make DESTDIR=%{buildroot} install
@@ -84,6 +67,11 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_mandir}/man1/%{name}.1*
 
 %changelog
+* Sat Nov 11 2017 Pavel Alexeev <Pahan@Hubbitus.info> - 0.20.0-1
+- Update to version 0.20.0
+- Upstream project moved to github
+- Step to use %%autosetup
+
 * Mon Oct 10 2016 Pavel Alexeev <Pahan@Hubbitus.info> - 0.19.0-1
 - Update to version 0.19.0.
 
