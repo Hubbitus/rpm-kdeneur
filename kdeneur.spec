@@ -4,9 +4,8 @@ Summary:       KDE frontend for X Neural Switcher (xneur)
 Summary(ru):   KDE интерфейс для X Neural Switcher (xneur)
 Name:          kdeneur
 Version:       0.20.0
-Release:       1%{?dist}
+Release:       2%{?dist}
 
-Group:         User Interface/Desktops
 License:       GPLv2+
 URL:           http://www.xneur.ru
 # Unfortunately there no traditional TAGs in repository, and I can't use recommended way to provide URL, link from official site:
@@ -57,7 +56,8 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %files -f %{name}.lang
-%doc AUTHORS ABOUT-NLS COPYING ChangeLog
+%doc AUTHORS ABOUT-NLS ChangeLog
+%license COPYING
 %{_bindir}/%{name}
 %{_datadir}/%{name}
 # To do not list files twice it must be listed by find_lang helper
@@ -67,6 +67,10 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 %{_mandir}/man1/%{name}.1*
 
 %changelog
+* Thu Nov 16 2017 Pavel Alexeev <Pahan@Hubbitus.info> - 0.20.0-2
+- Mark COPYING as %%changelog
+- Drop group specification
+
 * Sat Nov 11 2017 Pavel Alexeev <Pahan@Hubbitus.info> - 0.20.0-1
 - Update to version 0.20.0
 - Upstream project moved to github
